@@ -1,4 +1,7 @@
 import streamlit as st
+from linkpreview import link_preview
+from io import BytesIO
+import requests
 from firebase_admin import firestore
 
 
@@ -18,3 +21,30 @@ def app():
         ph='Enjoy your content'
         
     st.write(ph)    
+    
+    
+    categories_ref = db.collection('users').document(st.session_state.username).collection('category')
+    categories = categories_ref.stream()
+    
+    def disp(url):
+        def get_image(url):
+            r = requests.get(url)
+            return BytesIO(r.content)
+
+
+        if url:
+            preview = link_preview(url)
+            st.image(get_image(preview.image), caption=preview.site_name)
+            st.title(preview.title)
+            st.write("description:", preview.description)
+
+    for category_doc in categories:
+        category_name = category_doc.id
+        st.write(f"\nURLs in category: {category_name}")
+
+        urls = category_doc.to_dict().get('urls', [])
+        if urls:
+            for url in urls:
+                disp(url)
+        else:
+            st.write("No URLs found in this category.")
