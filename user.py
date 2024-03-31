@@ -28,18 +28,24 @@ def app():
         print(info.exists)
         
         if info.exists:
-                info = db.collection('users').document(st.session_state.username).collection('category').document(category).get()
-                info = info.to_dict()
-                print(info.keys())
-                if 'urls' in info.keys():
-                    print("here")
-                    user=db.collection('users').document(st.session_state.username).collection('category').document(category)
-                    user.update({'urls': firestore.ArrayUnion([url])})
+                info = db.collection('users').document(st.session_state.username).collection('category').document(category)
+                info1 = info.get()
+                if not info1.exists:
+                    info.set({
+                        'urls':[url]
+                    })
+                else:    
+                    info = info1.to_dict()
+                    print(info.keys())
+                    if 'urls' in info.keys():
+                        print("here")
+                        user=db.collection('users').document(st.session_state.username).collection('category').document(category)
+                        user.update({'urls': firestore.ArrayUnion([url])})
                     
-                else:
+                    else:
                     
-                    data={"urls":[url],'Username':st.session_state.username}
-                    db.collection('users').document(st.session_state.username).collection('category').document(category).set(data)    
+                        data={"urls":[url],'Username':st.session_state.username}
+                        db.collection('users').document(st.session_state.username).collection('category').document(category).set(data)    
         
         else:
                     
