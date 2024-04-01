@@ -21,7 +21,7 @@ def gen(url):
         }
 
         # url = request.GET.get('link')
-        print(url)
+        # print(url)
         req = requests.get(url, headers)
         html = BeautifulSoup(req.content, 'html.parser')
         meta_data = {

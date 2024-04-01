@@ -6,9 +6,11 @@ import Home ,Account ,Test,My_DataBase;
 
 
 
-# st.set_page_config(page_title ="Link Preview Gen", page_icon = "🔗", initial_sidebar_state = "auto")
 
 class MultiApp:
+    st.set_page_config(page_title ="Link Preview Gen", page_icon = "🔗", initial_sidebar_state = "auto")
+    
+       
     
     def __init__(self):
         self.apps=[]
@@ -25,8 +27,8 @@ class MultiApp:
             app = option_menu(
 				menu_title='Link_Preview_Gen',
 				options=['Home','Account','My_DataBase','Test'],
-				icons=['🏠','👤','🧪','🗃️'],
-				menu_icon='🔗',
+				icons=['house-fill','person-circle',"database","hourglass"],
+				menu_icon="🔗",
 				default_index=0,
 				styles={
                     "container": {"padding": "5!important","background-color":'black'},
