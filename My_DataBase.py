@@ -107,20 +107,20 @@ def app():
         categories_ref = db.collection('users').document(st.session_state.username).collection('category')
         categories = categories_ref.stream()
     
-        # def disp(url):
-        #     def get_image(url):
-        #         r = requests.get(url)
-        #         if r:
-        #             return BytesIO(r.content)
+        def disp(url):
+            def get_image(url):
+                r = requests.get(url)
+                if r:
+                    return BytesIO(r.content)
 
 
-        #     if url:
-        #         preview = link_preview(url)
-        #         st.image(get_image(preview.image), caption=preview.site_name)
-        #         st.title(preview.title)
-        #         st.write("description:", preview.description)
+            if url:
+                preview = link_preview(url)
+                st.image(get_image(preview.image), caption=preview.site_name)
+                st.title(preview.title)
+                st.write("description:", preview.description)
         
-        gen(url)    
+            
     
             
 
@@ -131,7 +131,7 @@ def app():
             urls = category_doc.to_dict().get('urls', [])
             if urls:
                 for url in urls:
-                    disp(url)
+                    gen(url)
             else:
                 st.write("No URLs found in this category.")
                 
