@@ -98,48 +98,37 @@ def app():
     
     ph = ''
     if st.session_state.username=='':
-        ph = 'Login to be able to see your contetnt!!'
+        st.write('Login to be able to see your contetnt!!')
     else:
-        ph='Enjoy your content'
+        st.write('Enjoy your content')
         
     
-    
+        
         categories_ref = db.collection('users').document(st.session_state.username).collection('category')
-        categories = categories_ref.stream()
-    
-        def disp(url):
-            def get_image(url):
-                r = requests.get(url)
-                if r:
-                    return BytesIO(r.content)
+        categories = [doc.id for doc in categories_ref.stream()]
 
+        st.title("User Categories and URLs")
 
-            if url:
-                preview = link_preview(url)
-                st.image(get_image(preview.image), caption=preview.site_name)
-                st.title(preview.title)
-                st.write("description:", preview.description)
-        
-            
-    
-            
+        if categories:
+            selected_category = st.selectbox("Select a Category:", categories)
 
-        for category_doc in categories:
-            category_name = category_doc.id
-            st.write(f"\nURLs in category: {category_name}")
+            urls_ref = db.collection('users').document(st.session_state.username).collection('category').document(selected_category)
+            urls_doc = urls_ref.get()
 
-            urls = category_doc.to_dict().get('urls', [])
-            if urls:
+            if urls_doc.exists:
+                urls = urls_doc.to_dict().get('urls', [])
+                st.write("URLs in this category:")
                 for url in urls:
                     gen(url)
+                    st.write("LINK: " +url)
+                    st.divider()
             else:
-                st.write("No URLs found in this category.")
-                
+                st.write("No URLs found in this category.") 
+        else:
+            st.write("No categories found for this user.")
                 
             
-    st.write(ph)    
-    choice = st.selectbox("Choose a Category",["Linkedin","Medium","Youtube","Instagram"])
-    
+
     
     
     
