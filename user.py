@@ -20,6 +20,7 @@ def app():
     st.write(ph)    
 
     category  = st.text_input("Enter the category")
+    category = category.lower()
     url = st.text_input("Enter the url")
     submit = st.button("Submit")
 

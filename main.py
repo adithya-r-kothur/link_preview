@@ -27,7 +27,7 @@ class MultiApp:
 				options=['Home','Account','My_DataBase','Test'],
 				icons=['🏠','👤','🧪','🗃️'],
 				menu_icon='🔗',
-				default_index=1,
+				default_index=0,
 				styles={
                     "container": {"padding": "5!important","background-color":'black'},
         			"icon": {"color": "white", "font-size": "23px"}, 

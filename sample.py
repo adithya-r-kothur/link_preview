@@ -1,10 +1,8 @@
-import streamlit as st
-from linkpreview import link_preview
 from io import BytesIO
-import requests
-from firebase_admin import firestore
 from bs4 import BeautifulSoup
-
+from django.http import JsonResponse
+import streamlit as st
+import requests
 
 def gen(url):
 
@@ -33,9 +31,9 @@ def gen(url):
 
         print(meta_data)
         
-        st.image(get_img(get_image(html)))
-        st.title(get_title(html))
+        st.write(get_title(html))
         st.write(get_description(html))
+        st.image(get_img(get_image(html)))
 
 
     def get_title(html):
@@ -83,29 +81,15 @@ def gen(url):
 
 
     generate_preview(url)
+    
+    
+url = st.text_input("enter the url")    
+gen(url)    
 
 
-def app():
-
-    st.write("Home")
-    st.title("Link Preview Generator")
 
 
-    st.write("Enter a Link")
-        
-    url = st.text_input("Enter the URL of the link you want to preview")
-
-    def get_image(url):
-        r = requests.get(url)
-        return BytesIO(r.content)
 
 
-    if url:
-        # preview = link_preview(url)
-        # st.image(get_image(preview.image), caption=preview.site_name)
-        # st.title(preview.title)
-        # st.write("description:", preview.description)
-        gen(url)
-        
-    else:
-        st.write("Looks like you have'nt Entered a URL to preview")
+
+

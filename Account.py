@@ -12,7 +12,10 @@ from firebase_admin import firestore
 import user as customer
 
 cred = credentials.Certificate("link-preview-gen.json")
-# firebase_admin.initialize_app(cred)
+try:
+    firebase_admin.get_app()
+except ValueError as e:
+    firebase_admin.initialize_app(cred)
 
 def app():
     st.title("Create An Account OR Login")
