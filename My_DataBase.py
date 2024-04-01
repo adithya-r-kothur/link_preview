@@ -8,6 +8,9 @@ from firebase_admin import firestore
 def app():
     st.write('My_DataBase')
     
+    if 'username' not in st.session_state:
+        st.session_state.username = ''
+    
     if 'db' not in st.session_state:
         st.session_state.db = ''
         
