@@ -114,14 +114,19 @@ def app():
 
             urls_ref = db.collection('users').document(st.session_state.username).collection('category').document(selected_category)
             urls_doc = urls_ref.get()
-
+            
             if urls_doc.exists:
                 urls = urls_doc.to_dict().get('urls', [])
                 st.write("URLs in this category:")
-                for url in urls:
+
+                for index, url in enumerate(urls):
                     gen(url)
-                    st.write("LINK: " +url)
-                    st.divider()
+                    st.write(f"{index + 1}. {url}")  # Number the URLs
+                    if st.button(f"Delete URL {index + 1}", key=index): 
+                        del urls[index]  # Remove from the list
+                        urls_ref.update({'urls': urls})  # Update Firestore
+                        st.experimental_rerun()  # Refresh the UI
+                    st.divider()    
             else:
                 st.write("No URLs found in this category.") 
         else:
